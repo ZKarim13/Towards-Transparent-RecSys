@@ -1,0 +1,33 @@
+# Ignore Python-related files
+#############################
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+
+# Ignore environment and virtualenv files
+#########################################
+venv/
+env/
+
+# Ignore 
+###################
+datasets/
+cache/
+
+
+
+# Ignore Editors
+################
+
+# VS Code
+.vscode/
+# Vim swap files
+*.swp
+
+
+
+# Ignore environment files
+##########################
+.env
