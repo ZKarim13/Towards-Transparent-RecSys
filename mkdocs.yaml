@@ -1,0 +1,10 @@
+site_name: Towards-Transparent-RecSys
+site_url: https://example.com/
+nav:
+  - Tutorial:
+    - Getting started: 
+      - beggining: getting_started.md
+
+
+
+theme: readthedocs
