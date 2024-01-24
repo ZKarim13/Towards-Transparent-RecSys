@@ -1,0 +1,16 @@
+# Geral configuration
+general:
+  cache_directory: cache
+  datasets_directory: datasets
+
+
+
+# Datasets configuration
+datasets:
+  
+  ml-latest-small:
+    source: https://files.grouplens.org/datasets/movielens/ml-latest-small.zip
+    module: datasets.movielens_dataset
+    class: MovielensDataset
+
+# Models Configuration
