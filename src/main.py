@@ -1,6 +1,7 @@
 import os
 import argparse
 import yaml
+from datasets.dataset_factory import DatasetFactory
 
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,7 +22,7 @@ def load_config():
 
 # extract the training loop from the main file
 def train(config):
-    pass
+    dataset = DatasetFactory.create_dataset(config) 
 
 
 
