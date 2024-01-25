@@ -24,6 +24,14 @@ def load_config():
         raise
 
 
+def create_directories(config):
+    general_config = config.get('general', {})
+    cache_directory = general_config.get('cache_directory')
+    dataset_directory = general_config.get('datasets_directory')
+    cache_path = os.path.join(PROJECT_ROOT, cache_directory)
+    datasets_path = os.path.join(PROJECT_ROOT, dataset_directory)
+    os.makedirs(datasets_path, exist_ok=True)
+    os.makedirs(cache_path, exist_ok=True)
 
 # extract the training loop from the main file
 def train(config):
@@ -68,6 +76,9 @@ def main():
 
     # Load the configuration
     config = load_config()
+
+    # create necessary directories
+    create_directories(config)
 
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(title='Commends',
