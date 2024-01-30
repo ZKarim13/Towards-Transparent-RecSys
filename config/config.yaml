@@ -13,4 +13,14 @@ datasets:
     module: datasets.movielens_dataset
     class: MovielensDataset
 
-# Models Configuration
+
+# Optional: the 'paths' section define key directories where used in the project.
+#paths:
+#  # datasets:
+#  datasets: custom_datasets_path
+#  # cache: quick-access cache for files downloaded from the internet.
+#  cache: custom_cache_path
+#  # models: store trained models.
+#  models: custom_models_path
+#  # logs: store log files.
+#  logs: custom_logs_path
