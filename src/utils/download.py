@@ -1,35 +1,41 @@
-import urllib.request
-import argparse
+"""
+Download Module
 
-def download_file(url:str, destination_path:str, verbose:bool):
+This module provides utility functions for downloading files from the internet.
+"""
+
+import os
+import urllib.request
+
+
+def download_file(url: str, destination_path: str):
     """Download a file from the internet and save it to the specified destination.
 
-    Args:
-        url (str): The URL of the file to be downloaded.
-        destination_path (str): The path where the downloaded file should be saved.
-        verbose(bool): print detailed progress information during the download.
+    Parameters:
+    - url (str): The URL of the file to be downloaded.
+    - destination_path (str): The path where the downloaded file should be saved.
+
+    Note:
+    - if the destination_path does not exist, the function will create it automatically.
+
+    Returns:
+    - None
+
+    Raises:
+    - ValueError: If the provided URL is invalid or if there are issues during the download.
+
+    Example:
+    - download_file('https://example.com/file.zip', '/path/to/destination', True)
     """
+
     def progress_callback(block_num, block_size, total_size):
-        """Callback function to display download progress."""
+        """Callback function to log the download progress."""
         downloaded = block_num * block_size
-        percent = (downloaded / total_size) * 100
-        print(f"Downloaded: {downloaded}/{total_size} bytes ({percent:.2f}%)", end='\r')
+        percent = int((downloaded / total_size) * 100)
+        if percent % 10 == 0:
+            print("Downloaded: %i/%i bytes (%i%%)" % (block_num, block_size, percent))
 
-    urllib.request.urlretrieve(url,
-                               destination_path,
-                               reporthook=progress_callback if verbose else None,
-                               )
-    if verbose:
-        print("\nDownload complete.")
-        print(f'downloaded to: {destination_path}')
+    # create the destination_path if it does not exist.
+    os.makedirs(os.path.dirname(destination_path), exist_ok=True)
 
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    
-    parser.add_argument('url')
-    parser.add_argument('des')
-    parser.add_argument('-v', '--verbose', action='store_true') 
-    args = parser.parse_args()
-
-    download_file(args.url, args.des, args.verbose)
+    urllib.request.urlretrieve(url, destination_path, reporthook=progress_callback)

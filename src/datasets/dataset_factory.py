@@ -1,5 +1,6 @@
 import importlib
 
+
 class DatasetFactory:
     """Factory class for creating dataset instances.
 
@@ -21,9 +22,8 @@ class DatasetFactory:
 
     """
 
-
     @staticmethod
-    def create_dataset(config:dict):
+    def create_dataset(config: dict):
         """Create an instance of the specified dataset class.
 
         Args:
@@ -36,21 +36,12 @@ class DatasetFactory:
         Raises:
             ValueError: If the dataset configuration is invalid.
         """
-        datasets_config = config.get('datasets', {})
-        dataset_config = datasets_config.get(config['args'].dataset, {})
-        module_name = dataset_config.get('module')
-        class_name = dataset_config.get('class')
+        datasets_config = config.get("datasets", {})
+        dataset_config = datasets_config.get(config["args"].dataset, {})
+        module_name = dataset_config.get("module")
+        class_name = dataset_config.get("class")
         if module_name and class_name:
             module = importlib.import_module(module_name)
             dataset_class = getattr(module, class_name)
         # should of raise some sort of an error indicating that the configuration is wrong.
         return dataset_class(config)
-
-
-
-
-
-         
-
-
-

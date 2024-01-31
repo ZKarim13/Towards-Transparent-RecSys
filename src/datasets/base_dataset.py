@@ -10,10 +10,10 @@ from torch.utils.data import Dataset
 class BaseDataset(Dataset):
 
     def __init__(self, config):
-        args = config['args']
+        args = config["args"]
         self.dataset_name = args.dataset
-        general_config = config.get('general', {})
-        dataset_directory = general_config.get('datasets_directory')
+        general_config = config.get("general", {})
+        dataset_directory = general_config.get("datasets_directory")
         self.datasets_path = os.path.join(PROJECT_ROOT, dataset_directory)
         self.dataset_path = os.path.join(self.datasets_path, self.dataset_name)
         if not self.check_dataset(config):
@@ -26,29 +26,28 @@ class BaseDataset(Dataset):
         pass
 
     def check_dataset(self, config) -> bool:
-        # TODO: implement the checking here 
+        # TODO: implement the checking here
         # we have all information in the config.
         # the information in the base should be enough.
         if os.path.exists(self.dataset_path):
-            print('dataset found')
+            print("dataset found")
             return True
 
         return False
 
     def fetch_dataset(self, config) -> None:
-        general_config = config.get('general', {})
-        cache_directory = general_config.get('cache_directory')
-        dataset_directory = general_config.get('datasets_directory')
+        general_config = config.get("general", {})
+        cache_directory = general_config.get("cache_directory")
+        dataset_directory = general_config.get("datasets_directory")
         cache_path = os.path.join(PROJECT_ROOT, cache_directory)
         datasets_path = os.path.join(PROJECT_ROOT, dataset_directory)
 
-        args = config['args']
+        args = config["args"]
         dataset_name = args.dataset
 
-        dataset_config = config.get('datasets').get(dataset_name)
-        source = dataset_config.get('source')
+        dataset_config = config.get("datasets").get(dataset_name)
+        source = dataset_config.get("source")
 
-        
         download_path = os.path.join(cache_path, dataset_name)
-        download_file(source, download_path, args.verbose)   
+        download_file(source, download_path)
         extract_dataset(download_path, datasets_path)
