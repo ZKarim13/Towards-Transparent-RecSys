@@ -1,53 +1,36 @@
 import os
 
-from main import PROJECT_ROOT
+from torch.utils.data import Dataset
+
 from utils.download import download_file
 from utils.extract import extract_dataset
+from utils.paths import Paths
 
-from torch.utils.data import Dataset
 
 
 class BaseDataset(Dataset):
 
     def __init__(self, config):
-        args = config["args"]
-        self.dataset_name = args.dataset
-        general_config = config.get("general", {})
-        dataset_directory = general_config.get("datasets_directory")
-        self.datasets_path = os.path.join(PROJECT_ROOT, dataset_directory)
-        self.dataset_path = os.path.join(self.datasets_path, self.dataset_name)
-        if not self.check_dataset(config):
-            self.fetch_dataset(config)
+        self.dataset_name = config['args'].dataset
+        self.config = config.get('datasets').get(self.dataset_name)
+        self.paths = Paths(config)
 
-    def __len__(self):
-        pass
+        if not self.check_dataset():
+            self.fetch_dataset()
 
-    def __getitem__(self, index):
-        pass
-
-    def check_dataset(self, config) -> bool:
-        # TODO: implement the checking here
-        # we have all information in the config.
-        # the information in the base should be enough.
-        if os.path.exists(self.dataset_path):
+    def check_dataset(self) -> bool:
+        dataset_path = self.paths.get_datasets_path(self.dataset_name)
+        if os.path.exists(dataset_path):
             print("dataset found")
             return True
 
         return False
 
-    def fetch_dataset(self, config) -> None:
-        general_config = config.get("general", {})
-        cache_directory = general_config.get("cache_directory")
-        dataset_directory = general_config.get("datasets_directory")
-        cache_path = os.path.join(PROJECT_ROOT, cache_directory)
-        datasets_path = os.path.join(PROJECT_ROOT, dataset_directory)
+    def fetch_dataset(self) -> None:
+        source = self.config.get('source')
 
-        args = config["args"]
-        dataset_name = args.dataset
+        download_path = self.paths.get_cache_path(self.dataset_name)
+        dataset_path = self.paths.get_datasets_path()
 
-        dataset_config = config.get("datasets").get(dataset_name)
-        source = dataset_config.get("source")
-
-        download_path = os.path.join(cache_path, dataset_name)
         download_file(source, download_path)
-        extract_dataset(download_path, datasets_path)
+        extract_dataset(download_path, dataset_path)

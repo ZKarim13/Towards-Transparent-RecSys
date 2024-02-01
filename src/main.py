@@ -1,24 +1,21 @@
 import os
 import argparse
-import yaml
-from datasets.dataset_factory import DatasetFactory
 
-# later extract thoese from here for better code design also for speed.
+import yaml
 from torch.utils.data import DataLoader
 import torch
 from torch import nn
+
 from models.simple_model import SimpleModel
-
-
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_CONFIG_FILE = "config/config.yaml"
+from datasets.dataset_factory import DatasetFactory
+from utils.paths import Paths
 
 
 def load_config():
-    config_file_path = os.path.join(PROJECT_ROOT, DEFAULT_CONFIG_FILE)
-
+    """load the default_config_file located in the config_path"""
+    config_file = Paths.get_config_file()
     try:
-        with open(config_file_path, "r") as file:
+        with open(config_file, "r", encoding='utf-8') as file:
             config = yaml.safe_load(file)
         return config
     except Exception as e:
@@ -52,19 +49,14 @@ def train(config):
             optimizer.step()
             if (i % 100) == 0:
                 print(f"batch {i}/{len(data_loader)} loss : {loss}")
-
     # save the model after training..
-
-
-def explain(config):
-    print('the "explain" command is not yet implemented.')
 
 
 def main():
 
     # Load the configuration
     config = load_config()
-
+ 
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(
         title="Commends",
@@ -86,12 +78,12 @@ def main():
     train_parser.set_defaults(func=train)
 
     # explain command
-    explain_parser = subparsers.add_parser(
-        "explain",
-        help="explain a model",
-        epilog='the "explain" command is not yer implemented',
-    )
-    explain_parser.set_defaults(func=explain)
+    #explain_parser = subparsers.add_parser(
+    #    "explain",
+    #    help="explain a model",
+    #    epilog='the "explain" command is not yer implemented',
+    #)
+    #explain_parser.set_defaults(func=explain)
 
     args = parser.parse_args()
     config["args"] = args
