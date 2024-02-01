@@ -1,5 +1,7 @@
 from pathlib import Path
 
+DEFAULT_CONFIG_FILE = "config.yaml"
+CONFIG_PATH = "config"
 DATASETS_PATH = "datasets"
 CACHE_PATH = "cache"
 MODELS_PATH = "models"
@@ -12,21 +14,35 @@ class Paths:
     def __new__(cls, config):
         if cls._instance is None:
             cls._instance = super(Paths, cls).__new__(cls)
-            cls._instance._config = config.get("paths", {})
-            cls._instance._project_root = Path(__file__).resolve().parent.parent.parent
         return cls._instance
 
-    def get_project_root(self):
-        return self._project_root
+    def __init__(self, config):
+        if not hasattr(self, "_config"):
+            self._config = config.get("paths", {})
+            self._project_root = Paths.get_project_root()
 
-    def get_datasets_path(self):
-        return self._project_root / self._config.get("datasets", DATASETS_PATH)
+    @staticmethod
+    def get_project_root():
+        return Path(__file__).resolve().parent.parent.parent
 
-    def get_cache_path(self):
-        return self._project_root / self._config.get("cache", CACHE_PATH)
+    @staticmethod
+    def get_config_path():
+        return Paths.get_project_root() / CONFIG_PATH
 
-    def get_models_path(self):
-        return self._project_root / self._config.get("models", MODELS_PATH)
+    @staticmethod
+    def get_config_file():
+        return Paths.get_config_path() / DEFAULT_CONFIG_FILE
 
-    def get_logs_path(self):
-        return self._project_root / self._config.get("logs", LOGS_PATH)
+    def get_datasets_path(self, dataset: str = ""):
+        return (
+            self._project_root / self._config.get("datasets", DATASETS_PATH) / dataset
+        )
+
+    def get_cache_path(self, cache: str = ""):
+        return self._project_root / self._config.get("cache", CACHE_PATH) / cache
+
+    def get_models_path(self, model: str = ""):
+        return self._project_root / self._config.get("models", MODELS_PATH) / model
+
+    def get_logs_path(self, log: str = ""):
+        return self._project_root / self._config.get("logs", LOGS_PATH) / log
