@@ -1,16 +1,15 @@
-import os
 import pandas as pd
 import torch
 
-from datasets.base_dataset import BaseDataset
+from .base_dataset import BaseDataset
+
 
 class MovielensDataset(BaseDataset):
     def __init__(self, config):
         super().__init__(config)
-        # should the reading of the dataset be part of the dataset class?
-        # what logic should i put here ??
-        # try to have more coner separaiton cause this will get messi very quickly.
-        df = pd.read_csv(self.paths.get_datasets_path(self.dataset_name) / "ratings.csv")
+        df = pd.read_csv(
+            self.paths.get_datasets_path(self.dataset_name) / "ratings.csv"
+        )
 
         self.user_mapping = {
             user_id: idx for idx, user_id in enumerate(df["userId"].unique())

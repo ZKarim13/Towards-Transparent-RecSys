@@ -10,7 +10,7 @@ datasets:
   
   ml-latest-small:
     source: https://files.grouplens.org/datasets/movielens/ml-latest-small.zip
-    module: datasets.movielens_dataset
+    module: src.datasets.movielens_dataset
     class: MovielensDataset
 
 

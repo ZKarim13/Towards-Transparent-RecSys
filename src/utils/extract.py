@@ -1,14 +1,11 @@
 """module doc string"""
 
 import os
-import logging
 import zipfile
 
 
 # rename this function to extract zip
-def extract_dataset(
-    source_path: str, destination_path: str, remove_zip=False, logger=True
-):
+def extract_dataset(source_path: str, destination_path: str, remove_zip=False):
     """Extracts a zip file to a specific destination
 
     Patameters:
