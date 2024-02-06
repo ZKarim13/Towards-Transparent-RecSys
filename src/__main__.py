@@ -6,7 +6,7 @@ import torch
 from torch import nn
 
 from .models.simple_model import SimpleModel
-from .datasets.dataset_factory import DatasetFactory
+from .datasets.dataset import Dataset
 from .utils.paths import Paths
 
 
@@ -24,9 +24,9 @@ def load_config():
 
 # extract the training loop from the main file
 def train(config):
-    dataset = DatasetFactory.create_dataset(config)
-    num_users = dataset.num_users()
-    num_movies = dataset.num_movies()
+    dataset = Dataset(config)
+    num_users = dataset.dataset.num_users()
+    num_movies = dataset.dataset.num_movies()
     embedding_size = 64
     model = SimpleModel(num_users, num_movies, embedding_size).to(dtype=torch.float)
     epochs = 30

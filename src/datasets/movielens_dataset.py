@@ -5,10 +5,10 @@ from .base_dataset import BaseDataset
 
 
 class MovielensDataset(BaseDataset):
-    def __init__(self, config):
-        super().__init__(config)
+    def __init__(self, path):
+        super().__init__(path)
         df = pd.read_csv(
-            self.paths.get_datasets_path(self.dataset_name) / "ratings.csv"
+            self.path / "ratings.csv"
         )
 
         self.user_mapping = {

@@ -1,4 +1,5 @@
 import importlib
+from ..utils.paths import Paths
 
 
 class DatasetFactory:
@@ -12,7 +13,7 @@ class DatasetFactory:
         None
 
     Methods:
-        create_dataset(dataset, config): Create an instance of the specified dataset class.
+       create_dataset(dataset, config): Create an instance of the specified dataset class.
 
     Example:
 
@@ -36,12 +37,14 @@ class DatasetFactory:
         Raises:
             ValueError: If the dataset configuration is invalid.
         """
+        dataset = config['args'].dataset
         datasets_config = config.get("datasets", {})
-        dataset_config = datasets_config.get(config["args"].dataset, {})
+        dataset_config = datasets_config.get(dataset, {})
         module_name = dataset_config.get("module")
         class_name = dataset_config.get("class")
         if module_name and class_name:
             module = importlib.import_module(module_name)
             dataset_class = getattr(module, class_name)
         # should of raise some sort of an error indicating that the configuration is wrong.
-        return dataset_class(config)
+        paths = Paths(config)
+        return dataset_class(paths.get_datasets_path(dataset))
