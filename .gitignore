@@ -15,6 +15,9 @@ env/
 ###################
 /datasets/
 cache/
+runs/
+models/
+logs/
 
 
 

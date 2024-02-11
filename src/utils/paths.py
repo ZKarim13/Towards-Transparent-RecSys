@@ -6,6 +6,7 @@ DATASETS_PATH = "datasets"
 CACHE_PATH = "cache"
 MODELS_PATH = "models"
 LOGS_PATH = "logs"
+RUNS_PATH = "runs"
 
 
 class Paths:
@@ -46,3 +47,6 @@ class Paths:
 
     def get_logs_path(self, log: str = ""):
         return self._project_root / self._config.get("logs", LOGS_PATH) / log
+
+    def get_runs_path(self, run: str = ""):
+        return self._project_root / self._config.get("runs", RUNS_PATH) / run

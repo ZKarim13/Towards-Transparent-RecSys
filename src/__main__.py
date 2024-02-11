@@ -1,20 +1,8 @@
 import argparse
 
-def load_config():
-    """load the default_config_file located in the config_path"""
-    import yaml
-    from .utils.paths import Paths
-    config_file = Paths.get_config_file()
-    try:
-        with open(config_file, "r", encoding="utf-8") as file:
-            config = yaml.safe_load(file)
-        return config
-    except Exception as e:
-        print(f"Error loading config file {e}")
-        raise
+from .utils.config import load_config, save_config
 
 
-# extract the training loop from the main file
 def train(config):
     from .gym import Gym
     gym = Gym(config)
@@ -23,8 +11,6 @@ def train(config):
 
 
 def main():
-
-    # Load the configuration
     config = load_config()
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(
@@ -35,7 +21,11 @@ def main():
 
     # train command
     train_parser = subparsers.add_parser("train", help="train a model")
-    # train_parser.add_argument('architecture')
+    train_parser.add_argument(
+        "--name",
+        help="experiment name.",
+        type=str,
+    )
     train_parser.add_argument(
         "--dataset",
         help="dataset that will be used in training",
@@ -55,13 +45,10 @@ def main():
 
     args = parser.parse_args()
     config["args"] = args
+
+    save_config(config)
+
     args.func(config)
-
-    ###########################
-    for _ in range(5):
-        print()
-    print(vars(args))
-
 
 if __name__ == "__main__":
     main()

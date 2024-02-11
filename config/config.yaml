@@ -1,7 +1,7 @@
 # Geral configuration
 general:
-  cache_directory: cache
-  datasets_directory: datasets
+  version: 0.0.1
+  author: ZKarim13
 
 
 
@@ -24,3 +24,5 @@ datasets:
 #  models: custom_models_path
 #  # logs: store log files.
 #  logs: custom_logs_path
+#  # runs:
+#  runs: custom_runs_path
