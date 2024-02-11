@@ -36,3 +36,6 @@ class MovielensDataset(BaseDataset):
 
     def num_movies(self):
         return len(self.movie_mapping)
+
+def initialize():
+    return MovielensDataset

@@ -41,10 +41,10 @@ class DatasetFactory:
         datasets_config = config.get("datasets", {})
         dataset_config = datasets_config.get(dataset, {})
         module_name = dataset_config.get("module")
-        class_name = dataset_config.get("class")
-        if module_name and class_name:
+        try:
             module = importlib.import_module(module_name)
-            dataset_class = getattr(module, class_name)
-        # should of raise some sort of an error indicating that the configuration is wrong.
+            dataset_class = module.initialize()
+        except Exception as e:
+            print(e)
         paths = Paths(config)
         return dataset_class(paths.get_datasets_path(dataset))
