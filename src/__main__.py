@@ -9,8 +9,8 @@ def train(config):
     gym.train()
 
 
-
 def main():
+
     config = load_config()
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(
